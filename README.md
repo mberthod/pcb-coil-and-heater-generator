@@ -53,6 +53,23 @@ This tool will have several limitations in it's current state.
 | 1.0.0   | Initial Version with 2 layer coil and single loop coil |
 | 1.1.0   | Add Flux Neutral Coil |
 | 1.2.0   | Update to KiCAD 8. Add parameter text into textbox. |
+| 2.0.0   | Massive update: Action Plugin, Polygon Shapes, Meander heaters, and JLCPCB Flex Heater limits compliance. |
+
+## Major Updates in v2.0
+
+### JLCPCB Flex Heater Generator (Action Plugin)
+This version introduces a complete **Action Plugin** with a Graphical User Interface, accessible directly from the PCB Editor's top toolbar.
+- **Multilingual UI (wxPython)** with support for direct generation onto the PCB.
+- Select your Heating Substrate (Polyimide/Silicone) and Conductor Material (Copper, Stainless Steel, FeCrAl, Brass, Nickel).
+- Supports 2-Pin connections and 3-Pin connections with automatic SMD NTC Thermistor placement.
+- Automatically calculates the exact required length based on Ohms Law (Target Voltage & Power) and specific resistivity of the material.
+- **Edge.Cuts fill capability:** Automatically detects the board outline and generates a custom serpentine/meander pattern covering the area up to the target wattage.
+
+### New Footprint Wizards
+1. `PolygonCoilGenerator:` Generate square, rectangular or triangular coils by turns.
+2. `PolygonHeaterGenerator:` Generate square, rectangular or triangular heaters that automatically stop growing when target V/W is reached.
+3. `MeanderHeaterGenerator:` Generate standard serpentine heating elements inside a defined bounding box.
+4. `CoilHeaterGenerator:` Generate a perfectly circular spiral heater matching target V/W.
 
 ## To dos
 
