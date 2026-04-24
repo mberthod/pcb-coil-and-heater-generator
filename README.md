@@ -52,3 +52,7 @@ Clone repo into `Documents\KiCad\8.0\scripting\plugins`
 ## License
 
 GPL-3.0 License
+
+## Acknowledgements
+
+A huge thank you to [Seth Kazarians (SK Electronics Consulting)](https://github.com/SK-Electronics-Consulting) for creating the original [kicad-coil-generators](https://github.com/SK-Electronics-Consulting/kicad-coil-generators) project. His foundational work on the footprint wizards and the `PCBTraceComponent` logic made this expanded flexible heater fork possible!
