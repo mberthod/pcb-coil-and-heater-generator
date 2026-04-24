@@ -1,26 +1,26 @@
 {
     "$schema": "https://go.kicad.org/pcm/schemas/v1",
-    "name": "KiCAD Coil Generator",
-    "description": "Generates various types of PCB trace inductors",
-    "description_full": "A collection of footprint wizards to generate PCB trace inductors.",
-    "identifier": "com.github.SK-Electronics-Consulting.kicad-coil-generators",
+    "name": "PCB Coil and Heater Generator",
+    "description": "Generates various types of PCB trace inductors and flexible heaters",
+    "description_full": "A collection of footprint wizards and an Action Plugin to generate PCB trace inductors, polygon coils, and flexible heaters (Meander/Serpentine, Spiral) with precise JLCPCB fabrication constraints.",
+    "identifier": "com.github.mberthod.pcb-coil-and-heater-generator",
     "type": "plugin",
     "author": {
-        "name": "SK Electronics Consulting",
+        "name": "Mathieu Tablet (forked from SK Electronics)",
         "contact": {
-            "web": "https://kazarians.dev"
+            "web": "https://github.com/mberthod"
         }
     },
     "license": "GPL-3.0",
     "resources": {
-        "homepage": "https://github.com/SK-Electronics-Consulting/kicad-coil-generators"
+        "homepage": "https://github.com/mberthod/pcb-coil-and-heater-generator"
     },
     "versions": [
         {
-            "version": "1.2.0",
+            "version": "2.0.0",
             "status": "stable",
             "kicad_version": "8.0",
-            "download_url": "https://github.com/SK-Electronics-Consulting/kicad-coil-generators/releases/download/v1.2.0/kicad-coil-generator-v1_2_0.zip"
+            "download_url": "https://github.com/mberthod/pcb-coil-and-heater-generator/releases/download/v2.0.0/pcb-coil-and-heater-generator-v2_0_0.zip"
         }
     ]
 }

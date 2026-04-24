@@ -1,4 +1,4 @@
-# Coil Generators
+# PCB Coil and Heater Generator
 
 ## Background
 
