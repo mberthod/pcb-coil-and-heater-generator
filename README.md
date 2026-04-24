@@ -2,83 +2,53 @@
 
 ## Background
 
-PCB coils are becoming quite common, and defining them can take some time. This plugin is intended to capture useful coil generators of various types.  It is also intended to do enough math under-the-hood to prevent collisions between generated features.  
+This project is a fork of the original KiCAD Coil Generator, massively expanded to include advanced flexible heater generation specifically tailored for modern manufacturing capabilities (like JLCPCB Flex Heaters). 
+It includes both traditional **Footprint Wizards** for simple inductors and a powerful new **Action Plugin** to generate complete heating elements directly on your PCB.
+
+## Features
+
+### 1. JLCPCB Flex Heater Generator (Action Plugin)
+Available directly in the PCB Editor (`Tools -> External Plugins`), this tool provides a complete graphical interface (GUI) to generate flexible heating elements:
+- **Material Selection:** Copper, Stainless Steel (SUS304), FeCrAl, Brass, Nickel (automatically uses the correct electrical resistivity).
+- **Substrate Alerts:** Choose between Polyimide (PI) or Silicone Rubber. The plugin warns you if the calculated power density (W/cm²) exceeds the safe operating limits for the selected substrate.
+- **Shape Generation:** Automatically draws required traces for Rectangle, Square, Circle, Oval, or **Fills the Edge.Cuts boundary** with a dense meander pattern.
+- **Connectivity:** Generates standard 2.54mm pitch connection pads. Supports **3-Pin connections** with automatic placement and routing of a central SMD NTC thermistor (0402, 0603, 0805, 1206).
+- **Precision:** Uses Ohm's Law and specific material properties to calculate the exact trace length needed for your Target Voltage (V) and Power (W). Enforces JLCPCB minimums (0.15mm trace, 0.2mm space).
+
+### 2. Footprint Wizards
+Available in the Footprint Editor (`Create footprint using footprint wizard`):
+- `PolygonCoilGenerator`: Generate square, rectangular, or triangular inductors by turn count.
+- `PolygonHeaterGenerator`: Generate geometric heaters that stop exactly when target V/W length is reached.
+- `MeanderHeaterGenerator`: Generate standard serpentine heating elements inside a strict bounding box.
+- `CoilHeaterGenerator`: Generate a perfectly circular spiral heater matching target V/W.
+- `CoilGeneratorID2L`, `CoilGenerator1L1T`, `FluxNeutralCoilGen`: Original legacy coil generators for inductance and flux-neutral applications.
 
 ## Installation
 
-This tool is intended to be used within the KiCAD Footprint Wizard tool. To do so requires installation into KiCAD.  This is either installing using the Plugin and Content Manager or clone this repo into one of the plugin directories.  (Further details below.)
+Clone this repository into your KiCad scripting plugins directory.
+*(Tested with KiCad 8.0+)*
 
-This tool has been tested with KiCAD 8.0.1.  It might work with other versions (6.x and 7.x), but has not been tested.
+**Linux:**
+```bash
+git clone https://github.com/mberthod/pcb-coil-and-heater-generator.git ~/.local/share/kicad/8.0/scripting/plugins/pcb-coil-and-heater-generator
+```
 
-### For Linux
-
-1. Clone the Repo into `~/.local/share/kicad/8.0/scripting/plugins/`
-
-### For Mac
-
-TODO but should be similar to Linux
-
-### For Windows
-
-1. Clone repo into `{Documents}\KiCad\8.0\scripting`
+**Windows:**
+Clone repo into `Documents\KiCad\8.0\scripting\plugins`
 
 ## Usage
 
-1. Launch by opening KiCAD -> Footprint Editor -> Footprint Wizard (second icon, the one with the red star)
-1. If it was installed correctly, it should show up at the end of the list of footprint wizards.
-1. Select and click OK.
-1. Adjust the parameters as needed.  Please note the limitations below, especially the inner layers not showing up in preview.
-1. Export the footprint to the editor. (Last icon in the upper left.)
-1. Save this to an appropriate footprint library.  
-1. From here, just use this as a footprint for an inductor in KiCAD, as it follows the normal design flow.
-
-## Coil Generator templates
-
-1. `CoilGeneratorID2L:` This will make a single coil across 2 PCB layers, and will do so starting from a defined inner diameter. It's intended to go around an open hole in the PCB.
-1. `CoilGenerator1L1T:` This will make a simple, single turn coil, terminating in vias.  It's intended to be used with another coil generator, and act as a pickup coil.
-1. `FluxNeutralCoilGen:` This will make a flux-neutral coil inside of a circular aperture.  The purpose of a flux neutral coil is to cancel out any flux that affects both coils, but will pick up any flux that affects only one.  Use as you see fit.
-
-## Limitations
-
-This tool will have several limitations in it's current state.
-
-1. It will not check for manufacturability of the coil.  However, you can do this in PCBNew.
-1. It will not check all conditions of if it will make a shape that's not plausible.  Specifically, using a min-radius of 0 will cause issues with the vias.
-1. If setting the layers to an inner layer, the Footprint Wizard will not display correctly.  This is a bug/limitation of KiCAD.  Once it's exported, it will work correctly.  One alternative to this is to generate the shape with F_Cu/B_Cu, and then do a text replacement after the fact.
+1. **For the Action Plugin:** Open the PCB Editor, click on `Tools` -> `External Plugins` -> `JLCPCB Flex Heater Generator`.
+2. **For Footprint Wizards:** Open the Footprint Editor, click the `Footprint Wizard` icon (the magic wand with a red star), and select the desired generator from the list.
 
 ## Version history
 
 | Version | Description |
 | ------- | ----------- |
-| 1.0.0   | Initial Version with 2 layer coil and single loop coil |
-| 1.1.0   | Add Flux Neutral Coil |
-| 1.2.0   | Update to KiCAD 8. Add parameter text into textbox. |
-| 2.0.0   | Massive update: Action Plugin, Polygon Shapes, Meander heaters, and JLCPCB Flex Heater limits compliance. |
+| 0.1.0   | Initial fork from SK-Electronics-Consulting. Included basic 2-layer and single loop coils. |
+| 0.2.0   | Added new footprint wizards (PolygonCoil, PolygonHeater, MeanderHeater, CoilHeater) with physical resistance/length calculations. |
+| 0.3.0   | Added the JLCPCB Flex Heater Action Plugin (wxPython GUI, Edge.Cuts fill, NTC component placement, multi-material physics engine). |
 
-## Major Updates in v2.0
+## License
 
-### JLCPCB Flex Heater Generator (Action Plugin)
-This version introduces a complete **Action Plugin** with a Graphical User Interface, accessible directly from the PCB Editor's top toolbar.
-- **Multilingual UI (wxPython)** with support for direct generation onto the PCB.
-- Select your Heating Substrate (Polyimide/Silicone) and Conductor Material (Copper, Stainless Steel, FeCrAl, Brass, Nickel).
-- Supports 2-Pin connections and 3-Pin connections with automatic SMD NTC Thermistor placement.
-- Automatically calculates the exact required length based on Ohms Law (Target Voltage & Power) and specific resistivity of the material.
-- **Edge.Cuts fill capability:** Automatically detects the board outline and generates a custom serpentine/meander pattern covering the area up to the target wattage.
-
-### New Footprint Wizards
-1. `PolygonCoilGenerator:` Generate square, rectangular or triangular coils by turns.
-2. `PolygonHeaterGenerator:` Generate square, rectangular or triangular heaters that automatically stop growing when target V/W is reached.
-3. `MeanderHeaterGenerator:` Generate standard serpentine heating elements inside a defined bounding box.
-4. `CoilHeaterGenerator:` Generate a perfectly circular spiral heater matching target V/W.
-
-## To dos
-
-1. TODO: Add different geometries of coils. (Rectangular, trapezoidal, wedge of circle)
-1. TODO: Add an inductance calculator with verification data.
-1. TODO: Add a resistance calculation for Ohms/oz.cu.
-1. TODO: Add cutouts to flux neutral and add boolean to enable/disable it.
-
-## Known Issues
-
-1. Flux Neutral coil generator doesn't adjust based on pad size.  
-1. In `CoilGeneratorID2L`, somewhere between N=2000 and N=3000, the final coils aren't displayed in the footprint wizard.  Might be a KiCAD bug
+GPL-3.0 License
